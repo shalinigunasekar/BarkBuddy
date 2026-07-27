@@ -2,3 +2,4 @@ Django
 gunicorn
 Pillow
 whitenoise
+django-crispy-forms
