@@ -4,3 +4,4 @@ Pillow
 whitenoise
 django-crispy-forms
 crispy-bootstrap5
+django-cleanup
