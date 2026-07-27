@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4 overflow-hidden">
+                <!-- Header -->
+                <div class="card-header bg-white py-3 border-bottom d-flex align-items-center">
+                    <div class="bg-primary-subtle p-2 rounded-circle me-3">
+                        <i class="bi bi-chat-dots text-primary fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Chatting about Adoption</h5>
+                        <small class="text-muted">Dog: <strong>{{ dog.name }}</strong></small>
+                    </div>
+                </div>
+
+                <!-- Chat Box -->
+                <div class="card-body bg-light" style="height: 450px; overflow-y: auto;" id="chat-window">
+                    {% for msg in chat_messages %}
+                        <div class="mb-3 {% if msg.sender == user %}text-end{% endif %}">
+                            <div class="p-3 rounded-4 d-inline-block shadow-sm {% if msg.sender == user %}bg-primary text-white{% else %}bg-white text-dark{% endif %}" style="max-width: 75%;">
+                                <p class="mb-1">{{ msg.content }}</p>
+                                <small style="font-size: 0.7rem; opacity: 0.8;">
+                                    {{ msg.timestamp|date:"H:i" }}
+                                </small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Footer Input -->
+                <div class="card-footer bg-white border-top p-3">
+                    <form method="POST" class="d-flex">
+                        {% csrf_token %}
+                        <input type="text" name="content" class="form-control rounded-pill border-0 bg-light px-4" placeholder="Write a message..." required>
+                        <button type="submit" class="btn btn-primary rounded-circle ms-2 px-3 py-2 shadow-sm">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-scroll chat to the bottom
+    var chatWindow = document.getElementById('chat-window');
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+</script>
+{% endblock %}

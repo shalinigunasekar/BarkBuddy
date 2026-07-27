@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold mb-4">Platform Analytics</h2>
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-primary text-white p-3 rounded-4">
+                <h6>Total Users</h6>
+                <h2 class="fw-bold">{{ total_users }}</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-success text-white p-3 rounded-4">
+                <h6>Total Dogs</h6>
+                <h2 class="fw-bold">{{ total_dogs }}</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-warning text-dark p-3 rounded-4">
+                <h6>Pending</h6>
+                <h2 class="fw-bold">{{ pending_requests }}</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-info text-white p-3 rounded-4">
+                <h6>Approved</h6>
+                <h2 class="fw-bold">{{ approved_requests }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-7">
+        <!-- Dog Image Display -->
+        {% if dog.images.all %}
+            <div id="dogCarousel" class="carousel slide shadow rounded-4 overflow-hidden" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for img in dog.images.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ img.image.url }}" class="d-block w-100" style="height: 500px; object-fit: cover;">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="bg-light rounded-4 d-flex align-items-center justify-content-center" style="height: 500px;">
+                <p class="text-muted">No images available</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-5">
+        <div class="p-4 bg-white shadow-sm rounded-4 h-100">
+            <h1 class="fw-bold">{{ dog.name }}</h1>
+            <p class="text-muted fs-5"><i class="bi bi-geo-alt"></i> {{ dog.district }}, {{ dog.state }}</p>
+            <hr>
+            
+            <div class="mb-3">
+                <span class="badge bg-info-subtle text-info fs-6 px-3">{{ dog.breed }}</span>
+                <span class="badge bg-secondary-subtle text-dark fs-6 px-3">{{ dog.age }}</span>
+                <span class="badge bg-primary-subtle text-primary fs-6 px-3">{{ dog.gender }}</span>
+            </div>
+
+            <h5 class="fw-bold mt-4">About this dog</h5>
+            <p>{{ dog.description }}</p>
+
+            <div class="bg-light p-3 rounded-3 mt-4">
+                <h6 class="fw-bold">Health Information</h6>
+                <p class="mb-1 small">Vaccinated: {% if dog.vaccinated %}✅ Yes{% else %}❌ No{% endif %}</p>
+                <p class="mb-0 small">Sterilized: {% if dog.sterilized %}✅ Yes{% else %}❌ No{% endif %}</p>
+            </div>
+
+            <!-- ADOPTION BUTTON LOGIC -->
+            <div class="mt-4 pt-3">
+                {% if user.is_authenticated %}
+                    {% if user.role == 'ADOPTER' %}
+                        <a href="{% url 'adoption:apply' dog.id %}" class="btn btn-primary btn-lg w-100 py-3 rounded-pill fw-bold shadow" style="background-color: #FF6B35; border:none;">
+                            Apply for Adoption
+                        </a>
+                    {% else %}
+                        <div class="alert alert-warning text-center rounded-4">
+                            <i class="bi bi-exclamation-triangle"></i> You are logged in as a <b>Donor</b>. Only Adopters can apply.
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="btn btn-secondary btn-lg w-100 rounded-pill fw-bold">
+                        Login to Apply for Adoption
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

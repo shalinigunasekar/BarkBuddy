@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="fw-bold mb-4" style="color: #FF6B35;">All Dogs Available for Adoption</h2>
+    <div class="row">
+        {% for dog in dogs %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden dog-card">
+                <!-- IMAGE LOGIC -->
+                {% if dog.images.all %}
+                    <img src="{{ dog.images.first.image.url }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-light text-center py-5 text-muted" style="height: 250px;">
+                        <i class="bi bi-camera fs-1 d-block"></i> No Image
+                    </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="fw-bold">{{ dog.name }}</h5>
+                    <p class="text-muted small"><i class="bi bi-geo-alt"></i> {{ dog.district }}, {{ dog.state }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3">{{ dog.breed }}</span>
+                        <a href="{% url 'dogs:dog_detail' dog.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No dogs listed yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .dog-card { transition: transform 0.3s; border: 1px solid #eee !important; }
+    .dog-card:hover { transform: translateY(-10px); }
+</style>
+{% endblock %}

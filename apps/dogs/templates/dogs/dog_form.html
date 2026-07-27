@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 mb-5">
+        <!-- Main Form Card -->
+        <div class="card shadow border-0 rounded-4 p-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold" style="color: #FF6B35;">List a Dog for Adoption</h2>
+                <p class="text-muted">Fill in all details to help people find this buddy.</p>
+            </div>
+
+            <!-- ENCTYPE is critical for image uploading -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Basic Details -->
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.name|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.breed|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.age|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.gender|as_crispy_field }}
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- IMAGE SECTION -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Upload Dog Photos</label>
+                    <input type="file" name="images" class="form-control" multiple required>
+                    <small class="text-muted">Select 1 or more photos. Hold <b>Ctrl</b> to select multiple.</small>
+                </div>
+
+                <!-- Health & Behavior Section -->
+                <div class="bg-light p-3 rounded-3 mb-4">
+                    <h6 class="fw-bold mb-3">Health & Behavior</h6>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form.vaccinated|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.sterilized|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.friendly_with_kids|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+
+                {{ form.description|as_crispy_field }}
+                {{ form.health_condition|as_crispy_field }}
+
+                <hr class="my-4">
+
+                <!-- LOCATION SECTION (Fixed: Added missing fields) -->
+                <h6 class="fw-bold mb-3">Location Information</h6>
+                <div class="mb-3">
+                    {{ form.location|as_crispy_field }}
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.district|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.state|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.pin_code|as_crispy_field }}
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- CONTACT SECTION -->
+                <h6 class="fw-bold mb-3">Owner Contact</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.contact_number|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.email|as_crispy_field }}
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="mt-4 text-center">
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm">
+                        Publish Listing
+                    </button>
+                    <a href="{% url 'core:home' %}" class="btn btn-link mt-2 text-decoration-none text-muted">Cancel and go back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-primary {
+        background-color: #FF6B35 !important;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #e55a2b !important;
+    }
+</style>
+{% endblock %}

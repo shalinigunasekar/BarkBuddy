@@ -1,0 +1,73 @@
+:root {
+    --primary-orange: #FF6B35;
+    --secondary-teal: #2EC4B6;
+    --dark-navy: #011627;
+    --light-gray: #F8F9FA;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: var(--dark-navy);
+}
+
+/* Navbar */
+.navbar {
+    background-color: white !important;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--dark-navy) !important;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/images/hero-dog.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+    color: white;
+    border-radius: 0 0 50px 50px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-orange);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #e55a2b;
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-teal);
+    border: none;
+    border-radius: 50px;
+}
+
+/* Dog Cards */
+.dog-card {
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.3s ease-in-out;
+    border: 1px solid #eee;
+}
+
+.dog-card:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-navy);
+    color: white;
+    padding: 50px 0;
+}

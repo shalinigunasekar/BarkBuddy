@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 mb-5">
+        <!-- Main Form Card -->
+        <div class="card p-4 shadow border-0 rounded-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold" style="color: #FF6B35;">Adoption Form for {{ dog.name }}</h2>
+                <p class="text-muted">Please provide honest details to help the donor review your application.</p>
+            </div>
+            <hr>
+
+            <!-- Form Start: enctype is required for the ID upload -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Full Name and Age -->
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Full Name</label>
+                        <input type="text" name="full_name" class="form-control rounded-3" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Your Age</label>
+                        <input type="number" name="age" class="form-control rounded-3" placeholder="Age" required>
+                    </div>
+                </div>
+
+                <!-- Phone and Family Members (FIXED: Added family_members) -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Phone Number</label>
+                        <input type="text" name="phone" class="form-control rounded-3" placeholder="e.g. +91 98765 43210" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Family Members</label>
+                        <input type="number" name="family_members" class="form-control rounded-3" placeholder="No. of people at home" required>
+                    </div>
+                </div>
+
+                <!-- House Type -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">House Type</label>
+                    <select name="house_type" class="form-select rounded-3" required>
+                        <option value="" selected disabled>Select your house type</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Bungalow">Bungalow</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Reason for Adoption -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Why do you want to adopt {{ dog.name }}?</label>
+                    <textarea name="reason" class="form-control rounded-3" rows="3" placeholder="Describe your lifestyle and pet experience..." required></textarea>
+                </div>
+
+                <!-- Govt ID Upload -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Upload Government ID (Aadhar/Voter ID)</label>
+                    <input type="file" name="gov_id" class="form-control rounded-3" required>
+                    <small class="text-muted">This is required for verification by the donor.</small>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary py-3 rounded-pill fw-bold shadow-sm">
+                        Submit Adoption Application
+                    </button>
+                    <a href="{% url 'dogs:dog_detail' dog.id %}" class="btn btn-link text-decoration-none text-muted">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-primary {
+        background-color: #FF6B35 !important;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #e55a2b !important;
+    }
+    .card {
+        border: 1px solid #f0f0f0 !important;
+    }
+</style>
+{% endblock %}
