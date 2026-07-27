@@ -3,3 +3,4 @@ gunicorn
 Pillow
 whitenoise
 django-crispy-forms
+crispy-bootstrap5
