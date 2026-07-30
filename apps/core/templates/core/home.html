@@ -24,17 +24,20 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card border-0 shadow-lg rounded-4 p-4 text-center">
-                <div class="row">
+                <div class="row align-items-center">
+                    <!-- Dogs Listed -->
                     <div class="col-4">
-                        <h2 class="fw-bold text-primary" style="color: #FF6B35 !important;">{{ stats.total_dogs|default:"0" }}+</h2>
+                        <h2 class="fw-bold" style="color: #FF6B35 !important;">{{ stats.total_dogs|default:"0" }}+</h2>
                         <p class="text-muted small mb-0">Dogs Listed</p>
                     </div>
+                    <!-- Successful Adoptions (FIXED) -->
                     <div class="col-4 border-start">
-                        <h2 class="fw-bold text-primary" style="color: #FF6B35 !important;">{{ stats.total_adoptions|default:"0" }}+</h2>
+                        <h2 class="fw-bold" style="color: #FF6B35 !important;">{{ stats.total_adoptions|default:"0" }}+</h2>
                         <p class="text-muted small mb-0">Successful Adoptions</p>
                     </div>
+                    <!-- Kind Hearts (Total Users) -->
                     <div class="col-4 border-start">
-                        <h2 class="fw-bold text-primary" style="color: #FF6B35 !important;">{{ stats.total_users|default:"0" }}+</h2>
+                        <h2 class="fw-bold" style="color: #FF6B35 !important;">{{ stats.total_users|default:"0" }}+</h2>
                         <p class="text-muted small mb-0">Kind Hearts</p>
                     </div>
                 </div>
@@ -58,15 +61,13 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 dog-card border-0 shadow-sm rounded-4 overflow-hidden">
                 
-                <!-- CORRECTED IMAGE LOGIC START -->
                 {% if dog.images.all %}
-                    <img src="{{ dog.images.first.image.url }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                    <img src="{{ dog.images.first.image.url }}" class="card-img-top" style="height: 250px; object-fit: cover;" alt="{{ dog.name }}">
                 {% else %}
                     <div class="bg-light d-flex align-items-center justify-content-center text-muted" style="height: 250px;">
                         <i class="bi bi-camera me-2"></i> No Image
                     </div>
                 {% endif %}
-                <!-- CORRECTED IMAGE LOGIC END -->
 
                 <div class="card-body">
                     <h5 class="fw-bold">{{ dog.name }}</h5>
@@ -93,21 +94,21 @@
         <div class="row text-center g-4">
             <div class="col-md-4">
                 <div class="p-4 bg-white rounded-4 shadow-sm h-100">
-                    <i class="bi bi-search fs-1 text-primary mb-3 d-block"></i>
+                    <i class="bi bi-search fs-1 text-primary mb-3 d-block" style="color: #FF6B35 !important;"></i>
                     <h5 class="fw-bold">Search</h5>
                     <p class="text-muted small">Browse dogs based on breed, size, age, and location.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-4 bg-white rounded-4 shadow-sm h-100">
-                    <i class="bi bi-chat-heart fs-1 text-primary mb-3 d-block"></i>
+                    <i class="bi bi-chat-heart fs-1 text-primary mb-3 d-block" style="color: #FF6B35 !important;"></i>
                     <h5 class="fw-bold">Connect</h5>
                     <p class="text-muted small">Apply for adoption and chat directly with the rescuer.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-4 bg-white rounded-4 shadow-sm h-100">
-                    <i class="bi bi-house-heart fs-1 text-primary mb-3 d-block"></i>
+                    <i class="bi bi-house-heart fs-1 text-primary mb-3 d-block" style="color: #FF6B35 !important;"></i>
                     <h5 class="fw-bold">Adopt</h5>
                     <p class="text-muted small">Complete the verification and welcome your new buddy!</p>
                 </div>
@@ -117,12 +118,12 @@
 </section>
 
 <style>
-    /* Styling to make cards pop */
     .dog-card { transition: transform 0.3s ease; border: 1px solid #f0f0f0 !important; }
     .dog-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
     .mt-n5 { margin-top: -50px !important; }
-    .btn-outline-primary { border-color: #2EC4B6; color: #2EC4B6; }
-    .btn-outline-primary:hover { background-color: #2EC4B6; color: white; border-color: #2EC4B6; }
+    .btn-outline-primary { border-color: #FF6B35; color: #FF6B35; }
+    .btn-outline-primary:hover { background-color: #FF6B35; color: white; border-color: #FF6B35; }
+    .text-primary { color: #FF6B35 !important; }
 </style>
 
 {% endblock %}

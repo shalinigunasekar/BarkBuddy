@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Your Notifications</h2>
+            </div>
+
+            {% for n in notifications %}
+                <!-- 1. Clickable link that marks as read and redirects -->
+                <a href="{% url 'notifications:read_and_redirect' n.id %}" class="text-decoration-none">
+                    <!-- 2. Conditional Styling: Blue border for NEW, Gray for READ -->
+                    <div class="card shadow-sm border-0 rounded-4 mb-3 p-3 notification-card {% if not n.is_read %}border-start border-primary border-4{% else %}border-start border-secondary opacity-75{% endif %}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <!-- 3. Message Text -->
+                                <p class="mb-1 fw-bold {% if not n.is_read %}text-dark{% else %}text-muted{% endif %}">
+                                    {{ n.text }}
+                                </p>
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>{{ n.created_at|timesince }} ago
+                                </small>
+                            </div>
+                            
+                            <!-- 4. Status Indicator -->
+                            <div class="text-primary">
+                                {% if not n.is_read %}
+                                    <span class="badge bg-danger rounded-pill small me-2">New</span>
+                                {% endif %}
+                                <i class="bi bi-chevron-right fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% empty %}
+                <!-- 5. Empty State -->
+                <div class="text-center py-5 bg-light rounded-5 border border-dashed">
+                    <i class="bi bi-chat-left-dots display-1 text-muted"></i>
+                    <p class="text-muted mt-3 fs-5">No notifications yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styling for the notification items */
+    .notification-card {
+        transition: all 0.2s ease-in-out;
+        background-color: white;
+    }
+    .notification-card:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
+    }
+    .border-primary { border-color: #FF6B35 !important; } /* Match BarkBuddy Orange */
+    .border-dashed { border-style: dashed !important; border-width: 2px !important; }
+</style>
+{% endblock %}

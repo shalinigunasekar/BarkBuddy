@@ -10,10 +10,10 @@ def home(request):
     featured_dogs = Dog.objects.filter(is_available=True).order_by('-created_at')[:6]
     
     # Calculate statistics for the "Stats Bar"
+    # FIXED: total_adoptions now counts dogs marked as NOT available (Adopted)
     stats = {
         'total_dogs': Dog.objects.count(),
-        # Count only requests marked as 'Completed'
-        'total_adoptions': AdoptionRequest.objects.filter(status='COMPLETED').count(),
+        'total_adoptions': Dog.objects.filter(is_available=False).count(),
         'total_users': User.objects.count(),
     }
     
@@ -37,7 +37,8 @@ def admin_dashboard(request):
         'total_users': User.objects.count(),
         'total_dogs': Dog.objects.count(),
         'pending_requests': AdoptionRequest.objects.filter(status='PENDING').count(),
-        'approved_requests': AdoptionRequest.objects.filter(status='ACCEPTED').count(),
+        # Ensure this matches the status used in your approval logic
+        'approved_requests': AdoptionRequest.objects.filter(status='Approved').count(),
         'recent_dogs': Dog.objects.order_by('-created_at')[:5],
         'recent_users': User.objects.order_by('-date_joined')[:5],
     }

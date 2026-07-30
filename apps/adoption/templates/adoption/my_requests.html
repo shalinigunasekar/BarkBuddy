@@ -28,14 +28,19 @@
                         <p class="text-muted small mb-0">
                             <i class="bi bi-calendar3"></i> Submitted on {{ req.created_at|date:"d M Y" }}
                         </p>
-                        <p class="mb-0 mt-2"><strong>Reason:</strong> {{ req.reason_for_adoption|truncatechars:100 }}</p>
+                        <p class="mb-0 mt-2 text-dark"><strong>Reason:</strong> {{ req.reason_for_adoption|truncatechars:100 }}</p>
                     </div>
 
-                    <!-- Status -->
+                    <!-- Status and Chat -->
                     <div class="col-md-3 text-end">
-                        <span class="badge {% if req.status == 'Pending' %}bg-warning{% elif req.status == 'Accepted' %}bg-success{% else %}bg-danger{% endif %} fs-6 px-4 py-2 rounded-pill">
-                            {{ req.status }}
-                        </span>
+                        <div class="mb-2">
+                            <span class="badge {% if req.status == 'Pending' %}bg-warning text-dark{% elif req.status == 'Accepted' %}bg-success{% else %}bg-danger{% endif %} fs-6 px-4 py-2 rounded-pill w-100">
+                                {{ req.status }}
+                            </span>
+                        </div>
+                        <a href="{% url 'chat:chat_room' req.id %}" class="btn btn-sm btn-outline-success w-100 rounded-pill">
+                             <i class="bi bi-chat-dots"></i> Message Rescuer
+                        </a>
                     </div>
                 </div>
             </div>

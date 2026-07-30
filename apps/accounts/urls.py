@@ -5,12 +5,15 @@ from . import views
 app_name = 'accounts'
 
 urlpatterns = [
-    # Registration logic
+    # 1. Registration
     path('register/', views.register, name='register'),
     
-    # Login logic
+    # 2. Login
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     
-    # Logout logic (using our custom function)
+    # 3. Logout
     path('logout/', views.user_logout, name='logout'),
+
+    # 4. Donor Profile (New: Allows Adopters to view Donor details)
+    path('profile/<int:pk>/', views.user_profile, name='user_profile'),
 ]

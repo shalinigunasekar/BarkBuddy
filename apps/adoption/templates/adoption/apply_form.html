@@ -1,48 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-7 mb-5">
+    <div class="col-md-6 mb-5">
         <!-- Main Form Card -->
         <div class="card p-4 shadow border-0 rounded-4">
             <div class="text-center mb-4">
-                <h2 class="fw-bold" style="color: #FF6B35;">Adoption Form for {{ dog.name }}</h2>
-                <p class="text-muted">Please provide honest details to help the donor review your application.</p>
+                <h2 class="fw-bold" style="color: #FF6B35;">Apply to Adopt {{ dog.name }}</h2>
+                <p class="text-muted small">We've pre-filled your profile details for you.</p>
             </div>
-            <hr>
 
-            <!-- Form Start: enctype is required for the ID upload -->
+            <!-- Transparency Box: Shows user what is being auto-submitted -->
+            <div class="alert alert-info py-2 rounded-3 border-0 shadow-sm mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-check-fill fs-4 me-3"></i>
+                    <div>
+                        <p class="mb-0 small"><strong>Applying as:</strong> {{ user.get_full_name|default:user.username }}</p>
+                        <p class="mb-0 small"><strong>Mobile:</strong> {{ user.phone_number }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Start -->
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 
-                <!-- Full Name and Age -->
                 <div class="row mb-3">
-                    <div class="col-md-8">
-                        <label class="form-label fw-bold">Full Name</label>
-                        <input type="text" name="full_name" class="form-control rounded-3" placeholder="Enter your full name" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Your Age</label>
-                        <input type="number" name="age" class="form-control rounded-3" placeholder="Age" required>
-                    </div>
-                </div>
-
-                <!-- Phone and Family Members (FIXED: Added family_members) -->
-                <div class="row mb-3">
+                    <!-- Age - Still required for adoption legalities -->
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Phone Number</label>
-                        <input type="text" name="phone" class="form-control rounded-3" placeholder="e.g. +91 98765 43210" required>
+                        <label class="form-label fw-bold">Your Age</label>
+                        <input type="number" name="age" class="form-control rounded-3" placeholder="Enter age" required>
                     </div>
+                    <!-- Family Members -->
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Family Members</label>
                         <input type="number" name="family_members" class="form-control rounded-3" placeholder="No. of people at home" required>
                     </div>
                 </div>
 
-                <!-- House Type -->
+                <!-- House Type Dropdown -->
                 <div class="mb-3">
-                    <label class="form-label fw-bold">House Type</label>
+                    <label class="form-label fw-bold">Current House Type</label>
                     <select name="house_type" class="form-select rounded-3" required>
-                        <option value="" selected disabled>Select your house type</option>
+                        <option value="" selected disabled>Select an option</option>
                         <option value="Apartment">Apartment</option>
                         <option value="Villa">Villa</option>
                         <option value="Bungalow">Bungalow</option>
@@ -52,21 +51,21 @@
 
                 <!-- Reason for Adoption -->
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Why do you want to adopt {{ dog.name }}?</label>
-                    <textarea name="reason" class="form-control rounded-3" rows="3" placeholder="Describe your lifestyle and pet experience..." required></textarea>
+                    <label class="form-label fw-bold">Reason for Adoption</label>
+                    <textarea name="reason" class="form-control rounded-3" rows="3" placeholder="Tell the rescuer why you'd like to adopt {{ dog.name }}..." required></textarea>
                 </div>
 
-                <!-- Govt ID Upload -->
+                <!-- Government ID Upload -->
                 <div class="mb-4">
-                    <label class="form-label fw-bold">Upload Government ID (Aadhar/Voter ID)</label>
+                    <label class="form-label fw-bold">Upload Government ID (Photo/PDF)</label>
                     <input type="file" name="gov_id" class="form-control rounded-3" required>
-                    <small class="text-muted">This is required for verification by the donor.</small>
+                    <div class="form-text small">Required for security and verification.</div>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary py-3 rounded-pill fw-bold shadow-sm">
-                        Submit Adoption Application
+                    <button type="submit" class="btn btn-primary py-3 rounded-pill fw-bold shadow">
+                        Send Adoption Request
                     </button>
                     <a href="{% url 'dogs:dog_detail' dog.id %}" class="btn btn-link text-decoration-none text-muted">Cancel</a>
                 </div>
@@ -76,12 +75,19 @@
 </div>
 
 <style>
+    /* Styling to match BarkBuddy brand */
     .btn-primary {
         background-color: #FF6B35 !important;
         border: none;
+        transition: 0.3s;
     }
     .btn-primary:hover {
         background-color: #e55a2b !important;
+        transform: translateY(-2px);
+    }
+    .alert-info {
+        background-color: #e3f2fd;
+        color: #0d47a1;
     }
     .card {
         border: 1px solid #f0f0f0 !important;

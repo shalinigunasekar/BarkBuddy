@@ -11,7 +11,16 @@ class User(AbstractUser):
         choices=Role.choices, 
         default=Role.ADOPTER
     )
-    phone_number = models.CharField(max_length=15, blank=True)
+    
+    # FIXED: Added unique=True to prevent duplicate mobile numbers
+    phone_number = models.CharField(
+        max_length=15, 
+        unique=True, 
+        null=True, 
+        blank=True,
+        help_text="Enter a unique mobile number"
+    )
+    
     profile_picture = models.ImageField(upload_to='profiles/', default='profiles/default_user.png', blank=True)
     bio = models.TextField(max_length=500, blank=True)
     city = models.CharField(max_length=100, blank=True)

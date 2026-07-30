@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Tailwind CSS for high-end UI components -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="bg-gray-50 min-h-screen pb-20">
+    <div class="container py-10 max-w-6xl mx-auto px-4">
+        
+        <!-- Breadcrumb & Back -->
+        <nav class="flex mb-8" aria-label="Breadcrumb">
+            <a href="{% url 'adoption:donor_dashboard' %}" class="flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition-colors">
+                <i class="bi bi-chevron-left me-2"></i> Back to Dashboard
+            </a>
+        </nav>
+
+        <!-- Header Card -->
+        <div class="bg-white rounded-3xl p-6 mb-8 shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="bg-orange-100 p-4 rounded-2xl text-orange-600">
+                    <i class="bi bi-file-earmark-person fs-2"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black text-gray-900 tracking-tight">Adoption Request #{{ req.id }}</h1>
+                    <p class="text-gray-500 text-sm">Submitted on {{ req.created_at|date:"D, d M Y • P" }}</p>
+                </div>
+            </div>
+            <div>
+                <span class="px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest shadow-sm
+                    {% if req.status == 'Pending' %}bg-yellow-100 text-yellow-700 border border-yellow-200
+                    {% elif req.status == 'Approved' %}bg-green-100 text-green-700 border border-green-200
+                    {% else %}bg-red-100 text-red-700 border border-red-200{% endif %}">
+                    ● {{ req.status }}
+                </span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Dog & Summary -->
+            <div class="space-y-6">
+                <!-- Dog Card -->
+                <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden sticky top-24">
+                    <div class="relative">
+                        {% if req.dog.images.all %}
+                        <img src="{{ req.dog.images.first.image.url }}" class="w-full h-64 object-cover">
+                        {% endif %}
+                        <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-gray-800 shadow-sm">
+                            ID: BBY-{{ req.dog.id }}
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-black text-gray-800">{{ req.dog.name }}</h3>
+                            <span class="text-orange-500 font-bold text-sm bg-orange-50 px-3 py-1 rounded-lg">{{ req.dog.breed }}</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <div class="bg-gray-50 p-3 rounded-2xl text-center">
+                                <p class="text-[10px] text-gray-400 font-black uppercase">Age</p>
+                                <p class="font-bold text-gray-700">{{ req.dog.age }}</p>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-2xl text-center">
+                                <p class="text-[10px] text-gray-400 font-black uppercase">Gender</p>
+                                <p class="font-bold text-gray-700">{{ req.dog.gender }}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Vaccinated</span>
+                                <span class="font-bold {% if req.dog.vaccinated %}text-green-500{% else %}text-red-400{% endif %}">
+                                    {% if req.dog.vaccinated %}YES{% else %}NO{% endif %}
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Sterilized</span>
+                                <span class="font-bold {% if req.dog.sterilized %}text-green-500{% else %}text-red-400{% endif %}">
+                                    {% if req.dog.sterilized %}YES{% else %}NO{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Form Data -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Applicant Details -->
+                <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+                    <h4 class="text-lg font-black text-gray-900 mb-8 flex items-center gap-2">
+                        <div class="w-2 h-8 bg-orange-500 rounded-full"></div>
+                        Applicant Information
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                        <div>
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-1">Full Name</label>
+                            <p class="text-gray-900 font-bold text-lg">{{ req.full_name }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-1">Mobile Number</label>
+                            <p class="text-gray-900 font-bold text-lg">{{ req.phone_number }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-1">Email Address</label>
+                            <p class="text-gray-900 font-bold">{{ req.email }}</p>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-1">Current House Type</label>
+                            <p class="text-gray-900 font-bold">{{ req.house_type }} • {{ req.family_members }} Members</p>
+                        </div>
+                        <div class="col-span-full">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-1">Experience with Pets</label>
+                            <p class="text-gray-700 bg-gray-50 p-4 rounded-2xl border border-gray-100">{{ req.experience_with_pets }}</p>
+                        </div>
+                        <div class="col-span-full">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-1">Reason for Adoption</label>
+                            <div class="mt-2 bg-orange-50 p-6 rounded-2xl text-gray-800 italic font-medium leading-relaxed">
+                                "{{ req.reason_for_adoption }}"
+                            </div>
+                        </div>
+                        <div class="col-span-full">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-1">Government ID (Verification)</label>
+                            <a href="{{ req.government_id.url }}" target="_blank" class="block mt-2 group">
+                                <div class="bg-gray-900 rounded-2xl p-6 flex items-center justify-between hover:bg-orange-600 transition-all shadow-lg shadow-gray-200">
+                                    <div class="flex items-center gap-4">
+                                        <i class="bi bi-file-earmark-medical text-white fs-2"></i>
+                                        <span class="text-white font-bold">View Identity Document</span>
+                                    </div>
+                                    <i class="bi bi-box-arrow-up-right text-white"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    {% if req.status == 'Pending' %}
+                    <div class="mt-12 pt-8 border-t border-gray-100 flex flex-col sm:flex-row gap-4">
+                        <button onclick="openModal('approveModal')" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-black py-5 rounded-2xl shadow-xl shadow-green-100 transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
+                            <i class="bi bi-check2-circle fs-4"></i> APPROVE ADOPTION
+                        </button>
+                        <button onclick="openModal('rejectModal')" class="flex-1 bg-white border-2 border-red-500 text-red-500 hover:bg-red-50 font-black py-5 rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-2">
+                            <i class="bi bi-x-circle fs-4"></i> REJECT REQUEST
+                        </button>
+                    </div>
+                    {% else %}
+                    <div class="mt-12 p-6 bg-gray-50 rounded-2xl flex items-center gap-4 border border-gray-100">
+                        <i class="bi bi-info-circle-fill text-gray-400 fs-3"></i>
+                        <div>
+                            <p class="font-bold text-gray-700">Decision Finalized</p>
+                            <p class="text-sm text-gray-500">This request was handled by {{ req.approved_by|default:"the system" }} on {{ req.decision_date|date:"d M Y" }}.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================
+     MODALS
+     ========================================== -->
+
+<!-- Approval Modal -->
+<div id="approveModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[40px] max-w-md w-full p-10 text-center shadow-2xl animate-in zoom-in duration-200">
+        <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="bi bi-check-lg display-4"></i>
+        </div>
+        <h3 class="text-3xl font-black text-gray-900 mb-4">Confirm Approval</h3>
+        <p class="text-gray-500 mb-10 text-lg leading-relaxed">
+            By approving, <b>{{ req.dog.name }}</b> will be marked as adopted and a notification will be sent to <b>{{ req.full_name }}</b> immediately.
+        </p>
+        <!-- FIXED ACTION URL FOR APPROVAL -->
+        <form method="POST" action="{% url 'adoption:approve' req.id %}">
+            {% csrf_token %}
+            <div class="flex flex-col gap-3">
+                <button type="submit" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-green-100 hover:bg-green-700 transition-all">APPROVE NOW</button>
+                <button type="button" onclick="closeModal('approveModal')" class="w-full py-4 text-gray-400 font-bold hover:text-gray-600">Nevermind, Go Back</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Rejection Modal -->
+<div id="rejectModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[40px] max-w-lg w-full p-10 shadow-2xl">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="bg-red-100 text-red-500 p-3 rounded-2xl"><i class="bi bi-slash-circle fs-3"></i></div>
+            <h3 class="text-2xl font-black text-gray-900">Decline Application</h3>
+        </div>
+        <!-- FIXED ACTION URL FOR REJECTION -->
+        <form method="POST" action="{% url 'adoption:reject' req.id %}">
+            {% csrf_token %}
+            <div class="mb-6">
+                <label class="block text-sm font-black text-gray-400 uppercase tracking-widest mb-3">Rejection Reason</label>
+                <select name="reason" id="rejection_reason_select" onchange="toggleOtherTextarea()" class="w-full border-2 border-gray-100 rounded-2xl p-4 bg-gray-50 font-bold text-gray-700 focus:border-orange-500 outline-none transition-all">
+                    <option>False Information Provided</option>
+                    <option>Invalid/Expired Documents</option>
+                    <option>Identity Verification Failed</option>
+                    <option>Home Inspection Failed</option>
+                    <option>Applicant Not Eligible</option>
+                    <option>Duplicate Request</option>
+                    <option>Dog Already Adopted</option>
+                    <option value="Other">Other Reason...</option>
+                </select>
+            </div>
+            <div id="other_reason_container" class="hidden mb-6">
+                <label class="block text-sm font-black text-gray-400 uppercase tracking-widest mb-3">Please Specify</label>
+                <textarea name="other_details" id="other_reason_textarea" class="w-full border-2 border-gray-100 rounded-2xl p-4 bg-gray-50 focus:border-orange-500 outline-none" rows="3" placeholder="Enter custom rejection reason..."></textarea>
+            </div>
+            <div class="flex gap-4">
+                <button type="button" onclick="closeModal('rejectModal')" class="flex-1 py-4 text-gray-400 font-bold">Cancel</button>
+                <button type="submit" class="flex-1 bg-red-600 text-white py-4 rounded-2xl font-black shadow-lg hover:bg-red-700">REJECT REQUEST</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Stop scrolling
+    }
+
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+    }
+
+    function toggleOtherTextarea() {
+        const select = document.getElementById('rejection_reason_select');
+        const container = document.getElementById('other_reason_container');
+        const textarea = document.getElementById('other_reason_textarea');
+        
+        if (select.value === 'Other') {
+            container.classList.remove('hidden');
+            textarea.required = true;
+        } else {
+            container.classList.add('hidden');
+            textarea.required = false;
+        }
+    }
+</script>
+
+<style>
+    @keyframes bounce-short {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    .animate-bounce-short { animation: bounce-short 1s ease-in-out; }
+</style>
+{% endblock %}

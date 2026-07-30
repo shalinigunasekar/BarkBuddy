@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar: Donor Info -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-4 rounded-4 mb-4">
+                <div class="mb-3">
+                    <i class="bi bi-person-circle text-primary" style="font-size: 5rem;"></i>
+                </div>
+                <h3 class="fw-bold mb-1">{{ profile_user.username }}</h3>
+                <p class="text-muted small mb-3">Rescue Donor</p>
+                <div class="badge bg-primary-subtle text-primary rounded-pill px-3 mb-3">
+                    Verified Member
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="text-start">
+                    <p class="small mb-2"><strong><i class="bi bi-envelope me-2"></i>Email:</strong> {{ profile_user.email }}</p>
+                    <p class="small mb-0"><strong><i class="bi bi-calendar-check me-2"></i>Joined:</strong> {{ profile_user.date_joined|date:"F Y" }}</p>
+                </div>
+
+                {% if user.is_authenticated and user != profile_user %}
+                <a href="{% url 'chat:inbox' %}" class="btn btn-primary w-100 rounded-pill mt-4 shadow-sm" style="background-color: #FF6B35; border:none;">
+                    <i class="bi bi-chat-dots me-2"></i>Message Donor
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Main Content: Listed Dogs -->
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0">Dogs Listed by {{ profile_user.username }}</h4>
+                <span class="badge bg-secondary rounded-pill">{{ donor_dogs.count }} Listings</span>
+            </div>
+
+            <div class="row g-4">
+                {% for dog in donor_dogs %}
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        {% if dog.images.first %}
+                            <img src="{{ dog.images.first.image.url }}" class="card-img-top" alt="{{ dog.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="bi bi-paw-fill display-1 text-secondary opacity-25"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-1">{{ dog.name }}</h5>
+                            <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1"></i>{{ dog.district }}</p>
+                            <a href="{% url 'dogs:dog_detail' dog.pk %}" class="btn btn-sm btn-outline-primary rounded-pill w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5 bg-white rounded-4 shadow-sm">
+                    <i class="bi bi-emoji-smile text-muted display-4"></i>
+                    <p class="text-muted mt-3">This donor hasn't listed any dogs yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
